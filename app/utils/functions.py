@@ -1,8 +1,11 @@
 import json
 
 def leeFichero(rutaFichero):
-    archivo=open(rutaFichero, "r")
-    data = json.load(archivo)
+    try: 
+        archivo = open(rutaFichero, "r")
+        data = json.load(archivo)
+    except json.JSONDecodeError:
+        data = []
     archivo.close()
     return data
 

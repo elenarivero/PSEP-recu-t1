@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+from flask_jwt_extended import jwt_required
 from utils.functions import *
 
 peliculasBP = Blueprint('peliculas', __name__)
@@ -25,6 +26,7 @@ def getActores(id_pelicula):
     return {"error": "no hay actores para la película indicada"}, 404
 
 @peliculasBP.put('/<int:id_pelicula>')
+@jwt_required()
 def modificaPelicula(id_pelicula):
     peliculas = leeFichero(rutaPeliculas)
     if request.is_json:
@@ -38,4 +40,5 @@ def modificaPelicula(id_pelicula):
         peliculas.append(nueva_pelicula)
         escribeFichero(peliculas, rutaPeliculas)
         return nueva_pelicula, 201
-    
+    else:
+        return {"error": "JSON erróneo"}, 415
